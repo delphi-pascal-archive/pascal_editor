@@ -1,0 +1,16 @@
+unit Pascal;
+
+interface
+
+uses
+  Classes,COW_RunTime,COW_Utils;
+
+{#COW -L "Pascal.lexer" -STREAMDATA}
+
+implementation
+
+end.
+  
+  
+
+  

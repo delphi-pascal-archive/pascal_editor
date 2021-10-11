@@ -1,0 +1,64 @@
+//################################################################################
+//#                                                                              #
+//#       This is a COW Lexer  file. For help about  how defining tokens,        #
+//#       please refeer  to the  Help file  distributed  along  with your        #
+//#       version of COW, or press F1.                                           #
+//#                                                                              #
+//#       For including the Lexer defined  in this file in a Pascal file,        #
+//#       create  a  Pre-Pascal   file   and  include  the  corresponding        #
+//#       preprocessor  directives  inside,  or  press F12  from the Pre-        #
+//#       Pascal editor window                                                   #
+//#                                                                              #
+//#       e. g. : {#COW -L Foo.lexer -PREFIX Foo}                                #
+//#                                                                              #
+//################################################################################
+
+ALPHACHAR                   = @["a".."z","_"];                                                      
+NUMCHAR                     = ["0".."9"];
+ALPHANUMCHAR                = ALPHACHAR | NUMCHAR;
+HEXCHAR                     = NUMCHAR | @["a".."f"];
+SIGNEDINT                   = ("+"|"-") NUMCHAR+ | NUMCHAR+;
+SIMPLEFLOAT                 = "." NUMCHAR+ | NUMCHAR+ "." | NUMCHAR+ "." NUMCHAR+;
+
+%SYMBOL                     = [";",".",",",":","=","<",">","+","-","/","*","^","@"];
+%PARENTHESIS                = ["(",")","[","]"];
+
+%KEYWORD                    = @"absolute" | @"abstract" | @"and" | @"array" | @"as" | @"at" | @"automated"
+                            | @"begin" | @"break"
+                            | @"case" | @"cdecl" | @"class" | @"const" | @"constructor" | @"contains"
+                            | @"continue"
+                            | @"default" | @"deprecated" | @"destructor" | @"dispinterface" | @"div" | @"do" | @"downto" | @"dynamic"
+                            | @"else" | @"end" | @"except" | @"exit" | @"export" | @"exports" | @"external"
+                            | @"far" | @"file" | @"finalization" | @"finally" | @"for" | @"forward" | @"function"
+                            | @"goto"
+                            | @"if" | @"implement" | @"implementation" | @"implements" | @"in" | @"index" | @"inherited" | @"initialization" | @"inline" | @"interface" | @"is"
+                            | @"label" | @"library" | @"local"
+                            | @"message" | @"mod" | @"name"
+                            | @"near" | @"nil" | @"not"
+                            | @"object" | @"of" | @"on" | @"or" | @"out" | @"overload" | @"override"
+                            | @"package" | @"packed" | @"pascal" | @"platform" | @"private" | @"procedure" | @"program" | @"property" | @"protected" | @"public" | @"published"
+                            | @"raise" | @"read" | @"record" | @"register" | @"reintroduce" | @"repeat" | @"requires" | @"resourcestring"
+                            | @"safecall" | @"set" | @"shl" | @"shr" | @"stdcall" | @"stored" | @"string"
+                            | @"then" | @"threadvar" | @"to" | @"try" | @"type"
+                            | @"unit" | @"until" | @"uses"
+                            | @"var" | @"virtual"
+                            | @"while" | @"with" | @"write"
+                            | @"xor";
+
+%ASMSTART                   = @"asm";
+
+%IDENT                      = ALPHACHAR ALPHANUMCHAR*;
+%INT                        = NUMCHAR+;
+%FLOAT                      = SIMPLEFLOAT | SIMPLEFLOAT ("e" | "E") SIGNEDINT;
+%HEXADECIMAL                = "$" HEXCHAR+;
+%STRING                     = "'" "'"~* "'" | "#" NUMCHAR+;
+
+%PREPROCESSOR               = "{$" "}"~* "}";
+%COMMENT                    = "{" "}"~* "}" | "//" #13~* #13;
+
+%PREPROCESSORSTART          = "{$";
+%COMMENTSTART1              = "{";
+%COMMANDSTART2              = "(*";
+
+$$                          = [" ",#10,#11,#13]*;
+ 
